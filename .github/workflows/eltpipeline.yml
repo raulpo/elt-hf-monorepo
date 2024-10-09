@@ -1,0 +1,58 @@
+name: ELT-Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '30 3 * * *'
+
+env:
+  PG_HOST: localhost
+  PG_PORT: 5455
+  PG_USERNAME: postgresUser
+  PG_PASSWORD: postgresPW
+  PG_DATABASE: postgresDB
+  PG_SCHEMA_RAW: raw
+
+jobs:
+  eltpipeline:
+    runs-on: ubuntu-latest
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: postgresUser
+          POSTGRES_PASSWORD: postgresPW
+          POSTGRES_DB: postgresDB
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5455:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Set up Python
+        run: uv python install 3.10
+
+      - name: Install the ingestion project
+        working-directory: ./ingestion
+        run: uv sync
+
+      - name: Run the ingestion project
+        working-directory: ./ingestion
+        run: uv run ingest.py
