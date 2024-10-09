@@ -15,6 +15,7 @@ env:
   PG_PASSWORD: postgresPW
   PG_DATABASE: postgresDB
   PG_SCHEMA_RAW: raw
+  PG_SCHEMA_FINAL: marts
 
 jobs:
   eltpipeline:
@@ -56,3 +57,11 @@ jobs:
       - name: Run the ingestion project
         working-directory: ./ingestion
         run: uv run ingest.py
+
+      - name: Install the transformation project
+        working-directory: ./transformation
+        run: uv sync
+
+      - name: Run the transformation project
+        working-directory: ./transformation/dbt_hackernews
+        run: bash run_dbt.sh
