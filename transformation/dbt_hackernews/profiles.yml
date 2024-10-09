@@ -1,0 +1,11 @@
+dbt_hackernews:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('PG_HOST') }}"
+      user: "{{ env_var('PG_USERNAME') }}"
+      password: "{{ env_var('PG_PASSWORD') }}"
+      port: "{{ env_var('PG_PORT') | as_number }}"
+      dbname: "{{ env_var('PG_DATABASE') }}"
+      schema: "{{ env_var('PG_SCHEMA_FINAL') }}"

@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: postgres_data
+    description: "Source data from HF hackernews dataset"
+    database: postgresDB
+    schema: raw
+
+    tables:
+      - name: raw_hacker_news_with_comments
+        description: "Raw table with data from HF Hackernews dataset"       
+        
