@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "airbyte>=0.17.9",
+    "dlt[parquet,postgres]>=1.2.0",
     "duckdb>=1.1.1",
+    "pandas>=2.2.3",
 ]
