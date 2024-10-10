@@ -1,0 +1,17 @@
+version: 2
+
+unit_tests:
+  - name: unit_test_hacker_news_subset_3_most_recent_months
+    description: "Check if the output data contains only comments within 3 months from the most recent comment in the input data."
+    model: hacker_news_subset   
+    given:
+      - input: source('postgres_data', 'raw_hacker_news_with_comments')
+        rows:
+          - { comment_author: "John Doe", title: "Title 1", comment_text: "foo bar", time_ts: "2014-09-25 13:09:30", }
+          - { comment_author: "John Doe", title: "Title 2", comment_text: "foo bar", time_ts: "2014-08-25 13:09:30", }
+          - { comment_author: "John Doe", title: "Title 3", comment_text: "foo bar", time_ts: "2014-05-25 13:09:30", }
+    expect:
+      rows:
+        - { comment_author: "John Doe", title: "Title 1", comment_text: "foo bar", time_ts: "2014-09-25 13:09:30", }
+        - { comment_author: "John Doe", title: "Title 2", comment_text: "foo bar", time_ts: "2014-08-25 13:09:30", }
+       
