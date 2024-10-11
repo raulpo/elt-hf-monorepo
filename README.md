@@ -21,7 +21,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 Após isso, pode-se instalar a versão necessária de Python com o comando:
 
 ```bash
-uv install python 3.10
+uv python install 3.10
 ```
 
 ### Ingestão (dlt)
@@ -77,7 +77,9 @@ export DESTINATION__POSTGRES__CREDENTIALS__PORT="5455"
 
 #### Transformation
 
-Para executar o script de transformação, é necessário definir as seguintes variáveis de ambiente:
+Para executar o script de transformação, é necessário definir as variáveis de ambiente referenciadas pelo arquivo 'profiles.yml'.
+
+É possível adicioná-las ao topo do script 'run_dbt.sh', no diretório 'transformation/dbt_hackernews/', da seguinte forma:
 
 ```bash
 export PG_HOST='localhost'
@@ -87,6 +89,9 @@ export PG_PASSWORD='postgresPW'
 export PG_DATABASE='postgresDB'
 export PG_SCHEMA_RAW='raw'
 export PG_SCHEMA_FINAL='marts'
+
+uv run dbt run --profiles-dir ./ --select 'hacker_news_subset'
+uv run dbt test --profiles-dir ./ --select 'hacker_news_subset'
 ```
 
 ## (Opcional) Preparação do banco de dados de destino
@@ -111,7 +116,7 @@ uv run ingest.py
 ### Executar apenas a tranformação
 
 ```bash
-cd transformation 
+cd transformation/dbt_hackernews
 bash run_dbt.sh
 ```
 ### Executar a pipeline completa
