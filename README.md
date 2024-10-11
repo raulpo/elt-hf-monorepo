@@ -89,6 +89,14 @@ export PG_SCHEMA_RAW='raw'
 export PG_SCHEMA_FINAL='marts'
 ```
 
+## (Opcional) Preparação do banco de dados de destino
+
+Caso não tenha instalado um banco de dados PostgreSQL, execute o comando abaixo para criar um container para executar testes. É necessário ter o Docker instalado no seu sistema.
+
+```bash
+docker run --name postgresDb -p 5455:5432 -e POSTGRES_USER=postgresUser -e POSTGRES_PASSWORD=postgresPW -e POSTGRES_DB=postgresDB -d postgres
+```
+
 ## Instruções de execução
 
 A partir do diretório raiz do projeto, execute os seguintes comandos:
