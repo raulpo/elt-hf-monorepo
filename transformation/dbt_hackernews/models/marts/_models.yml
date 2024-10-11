@@ -1,0 +1,23 @@
+models:
+  - name: hacker_news_subset
+    config:
+      materialized: table
+      contract:
+        enforced: true
+    columns:
+      - name: title
+        data_type: string
+        constraints:
+          - type: not_null
+      - name: comment_author
+        data_type: string
+        constraints:
+          - type: not_null
+      - name: comment_text
+        data_type: string
+        constraints:
+          - type: not_null
+      - name: time_ts
+        data_type: timestamp
+        constraints:
+          - type: not_null
